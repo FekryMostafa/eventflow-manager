@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventFlow - Conference Management</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Notification Permission Banner -->
+    <div id="notificationBanner" class="notification-banner hidden">
+        <div class="banner-content">
+            <div class="banner-icon">🔔</div>
+            <div class="banner-text">
+                <h3>Stay Updated</h3>
+                <p>Enable notifications to get instant alerts when sessions change</p>
+            </div>
+            <div class="banner-actions">
+                <button id="enableNotifications" class="btn btn-primary">Enable</button>
+                <button id="dismissBanner" class="btn btn-ghost">Maybe Later</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="brand-icon">◢</div>
+                    <div class="brand-info">
+                        <h1 class="brand-name">EventFlow</h1>
+                        <p class="brand-subtitle">TechCon 2025</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button id="notificationToggle" class="btn btn-icon" title="Notification Status">
+                        <span class="notification-status">🔔</span>
+                    </button>
+                    <button id="addSessionBtn" class="btn btn-primary">
+                        <span class="btn-icon">+</span>
+                        Add Session
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search sessions, speakers, topics..." />
+                    <button id="clearSearch" class="clear-btn hidden">×</button>
+                </div>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="roomFilter">Room</label>
+                        <select id="roomFilter" class="filter-select">
+                            <option value="">All Rooms</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="attendeeFilter">Attendee</label>
+                        <select id="attendeeFilter" class="filter-select">
+                            <option value="">All Attendees</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="timeFilter">Time</label>
+                        <select id="timeFilter" class="filter-select">
+                            <option value="">All Times</option>
+                            <option value="morning">Morning (Before 12 PM)</option>
+                            <option value="afternoon">Afternoon (12 PM - 5 PM)</option>
+                            <option value="evening">Evening (After 5 PM)</option>
+                        </select>
+                    </div>
+
+                    <button id="resetFilters" class="btn btn-ghost">Reset</button>
+                </div>
+            </div>
+
+            <!-- View Toggle -->
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="timeline">
+                    <span class="view-icon">◫</span>
+                    Timeline
+                </button>
+                <button class="view-btn" data-view="grid">
+                    <span class="view-icon">▦</span>
+                    Grid
+                </button>
+                <button class="view-btn" data-view="list">
+                    <span class="view-icon">☰</span>
+                    List
+                </button>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-label">Total Sessions</span>
+                    <span class="stat-value" id="totalSessions">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Active Attendees</span>
+                    <span class="stat-value" id="totalAttendees">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Venues</span>
+                    <span class="stat-value" id="totalRooms">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">My Sessions</span>
+                    <span class="stat-value" id="mySessions">0</span>
+                </div>
+            </div>
+
+            <!-- Sessions Container -->
+            <div id="sessionsContainer" class="sessions-container timeline-view">
+                <!-- Sessions will be dynamically inserted here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state hidden">
+                <div class="empty-icon">📭</div>
+                <h2>No Sessions Found</h2>
+                <p>Try adjusting your filters or search criteria</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Session Modal -->
+    <div id="sessionModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Session Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-form">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <h2 id="editModalTitle">Add New Session</h2>
+                <form id="sessionForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sessionTitle">Session Title *</label>
+                            <input type="text" id="sessionTitle" required />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sessionSpeaker">Speaker *</label>
+                            <input type="text" id="sessionSpeaker" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="sessionRoom">Room *</label>
+                            <select id="sessionRoom" required>
+                                <option value="">Select Room</option>
+                                <option value="Main Auditorium">Main Auditorium</option>
+                                <option value="Innovation Lab">Innovation Lab</option>
+                                <option value="Workshop Hall">Workshop Hall</option>
+                                <option value="Studio 4">Studio 4</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sessionDate">Date *</label>
+                            <input type="date" id="sessionDate" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="sessionStartTime">Start Time *</label>
+                            <input type="time" id="sessionStartTime" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="sessionEndTime">End Time *</label>
+                            <input type="time" id="sessionEndTime" required />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="sessionDescription">Description</label>
+                            <textarea id="sessionDescription" rows="4"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="sessionTags">Tags (comma separated)</label>
+                            <input type="text" id="sessionTags" placeholder="AI, Machine Learning, Backend" />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label>Assigned Attendees</label>
+                            <div id="attendeeCheckboxes" class="checkbox-grid">
+                                <!-- Dynamic checkboxes will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-ghost" id="cancelEdit">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Session</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
