@@ -2,18 +2,18 @@
    CSS VARIABLES & THEME
    ============================================ */
 :root {
-    /* Color Palette - Bold & Professional */
-    --primary: #0066FF;
-    --primary-dark: #0052CC;
-    --primary-light: #338FFF;
-    --secondary: #FF3366;
-    --accent: #00D9B5;
+    /* Color Palette - Copado Branding */
+    --primary: #0097D8;
+    --primary-dark: #007AB3;
+    --primary-light: #33ADE0;
+    --secondary: #FF6B35;
+    --accent: #00B2A9;
 
-    /* Room Colors */
-    --room-1: #FF6B35;
-    --room-2: #4ECDC4;
-    --room-3: #A855F7;
-    --room-4: #F59E0B;
+    /* Room Colors - Copado Palette */
+    --room-1: #0097D8;
+    --room-2: #00B2A9;
+    --room-3: #FF6B35;
+    --room-4: #5B9BD5;
 
     /* Neutrals */
     --bg-dark: #0A0E17;
@@ -241,13 +241,13 @@ body {
 .btn-primary {
     background: var(--primary);
     color: white;
-    box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.4);
+    box-shadow: 0 0 0 0 rgba(0, 151, 216, 0.4);
 }
 
 .btn-primary:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 151, 216, 0.4);
 }
 
 .btn-primary:active {
@@ -352,7 +352,7 @@ body {
 .search-box input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 151, 216, 0.1);
 }
 
 .clear-btn {
@@ -1117,7 +1117,7 @@ body {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 151, 216, 0.1);
 }
 
 .form-group textarea {

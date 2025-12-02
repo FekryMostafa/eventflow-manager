@@ -39,160 +39,160 @@ class EventManager {
         if (this.sessions.length === 0) {
             // Define attendees
             this.attendees = [
-                { id: 1, name: 'Sarah Chen', email: 'sarah.chen@example.com' },
-                { id: 2, name: 'Marcus Williams', email: 'marcus.w@example.com' },
-                { id: 3, name: 'Elena Rodriguez', email: 'elena.r@example.com' },
-                { id: 4, name: 'James Park', email: 'james.park@example.com' },
-                { id: 5, name: 'Amara Okafor', email: 'amara.o@example.com' },
-                { id: 6, name: 'David Kim', email: 'david.kim@example.com' },
-                { id: 7, name: 'Sophie Turner', email: 'sophie.t@example.com' },
-                { id: 8, name: 'Raj Patel', email: 'raj.patel@example.com' },
-                { id: 9, name: 'Isabella Santos', email: 'isabella.s@example.com' },
-                { id: 10, name: 'Omar Hassan', email: 'omar.h@example.com' },
-                { id: 11, name: 'Lily Zhang', email: 'lily.zhang@example.com' },
-                { id: 12, name: 'Alex Morgan', email: 'alex.m@example.com' },
-                { id: 13, name: 'Nina Kowalski', email: 'nina.k@example.com' },
-                { id: 14, name: 'Carlos Mendez', email: 'carlos.m@example.com' },
-                { id: 15, name: 'Aisha Johnson', email: 'aisha.j@example.com' }
+                { id: 1, name: 'Sarah Chen', email: 'sarah.chen@copado.com' },
+                { id: 2, name: 'Marcus Williams', email: 'marcus.w@copado.com' },
+                { id: 3, name: 'Elena Rodriguez', email: 'elena.r@copado.com' },
+                { id: 4, name: 'James Park', email: 'james.park@copado.com' },
+                { id: 5, name: 'Amara Okafor', email: 'amara.o@copado.com' },
+                { id: 6, name: 'David Kim', email: 'david.kim@copado.com' },
+                { id: 7, name: 'Sophie Turner', email: 'sophie.t@copado.com' },
+                { id: 8, name: 'Raj Patel', email: 'raj.patel@copado.com' },
+                { id: 9, name: 'Isabella Santos', email: 'isabella.s@copado.com' },
+                { id: 10, name: 'Omar Hassan', email: 'omar.h@copado.com' },
+                { id: 11, name: 'Lily Zhang', email: 'lily.zhang@copado.com' },
+                { id: 12, name: 'Alex Morgan', email: 'alex.m@copado.com' },
+                { id: 13, name: 'Nina Kowalski', email: 'nina.k@copado.com' },
+                { id: 14, name: 'Carlos Mendez', email: 'carlos.m@copado.com' },
+                { id: 15, name: 'Aisha Johnson', email: 'aisha.j@copado.com' }
             ];
 
             // Define rooms
             this.rooms = [
-                'Main Auditorium',
-                'Innovation Lab',
-                'Workshop Hall',
-                'Studio 4'
+                'Executive Boardroom',
+                'Innovation Hub',
+                'Training Center',
+                'Collaboration Space'
             ];
 
             // Define sessions with rich data
             this.sessions = [
                 {
                     id: 1,
-                    title: 'The Future of AI: Beyond Machine Learning',
-                    speaker: 'Dr. Sarah Chen',
-                    room: 'Main Auditorium',
+                    title: 'Q1 2026 Strategic Planning Session',
+                    speaker: 'Sarah Chen (CEO)',
+                    room: 'Executive Boardroom',
                     date: '2025-12-15',
                     startTime: '09:00',
                     endTime: '10:30',
-                    description: 'Explore the cutting-edge developments in artificial intelligence, including neural architectures, autonomous systems, and ethical considerations. This keynote will set the stage for understanding how AI will transform industries over the next decade.',
-                    tags: ['AI', 'Machine Learning', 'Keynote'],
+                    description: 'Comprehensive review of Q4 2025 achievements and strategic planning for Q1 2026. Discussion of key initiatives, resource allocation, and growth targets for the upcoming quarter.',
+                    tags: ['Strategy', 'Planning', 'Leadership'],
                     attendees: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                     lastUpdated: null
                 },
                 {
                     id: 2,
-                    title: 'Building Scalable Microservices Architecture',
+                    title: 'DevOps Best Practices Workshop',
                     speaker: 'Marcus Williams',
-                    room: 'Innovation Lab',
+                    room: 'Innovation Hub',
                     date: '2025-12-15',
                     startTime: '09:00',
                     endTime: '10:00',
-                    description: 'Learn best practices for designing and implementing microservices that can scale to millions of users. We\'ll cover service mesh, API gateways, and distributed tracing.',
-                    tags: ['Backend', 'Architecture', 'Microservices'],
+                    description: 'Hands-on workshop covering Copado DevOps automation best practices. Learn about pipeline optimization, quality gates, and compliance-driven development workflows.',
+                    tags: ['DevOps', 'Automation', 'Training'],
                     attendees: [2, 5, 8, 11, 14],
                     lastUpdated: null
                 },
                 {
                     id: 3,
-                    title: 'Modern Frontend Development with Web Components',
+                    title: 'Customer Success Review Meeting',
                     speaker: 'Elena Rodriguez',
-                    room: 'Workshop Hall',
+                    room: 'Training Center',
                     date: '2025-12-15',
                     startTime: '10:00',
                     endTime: '11:30',
-                    description: 'Hands-on workshop covering the latest in frontend development. Build reusable web components, optimize performance, and create delightful user experiences.',
-                    tags: ['Frontend', 'JavaScript', 'Workshop'],
+                    description: 'Review of customer health scores, renewal forecasts, and expansion opportunities. Discuss strategies to improve customer engagement and reduce churn.',
+                    tags: ['Customer Success', 'Strategy', 'Revenue'],
                     attendees: [3, 6, 9, 12, 15],
                     lastUpdated: null
                 },
                 {
                     id: 4,
-                    title: 'Cloud Native Security: Best Practices',
+                    title: 'Product Roadmap Discussion',
                     speaker: 'James Park',
-                    room: 'Studio 4',
+                    room: 'Collaboration Space',
                     date: '2025-12-15',
                     startTime: '11:00',
                     endTime: '12:00',
-                    description: 'Deep dive into securing cloud-native applications. Topics include zero-trust architecture, container security, secrets management, and compliance automation.',
-                    tags: ['Security', 'Cloud', 'DevOps'],
+                    description: 'Review upcoming product features and prioritization for the next release cycle. Gather feedback from stakeholders and align on delivery timelines.',
+                    tags: ['Product', 'Roadmap', 'Planning'],
                     attendees: [4, 7, 10, 13],
                     lastUpdated: null
                 },
                 {
                     id: 5,
-                    title: 'Data Science in Production: From Notebook to Pipeline',
-                    speaker: 'Amara Okafor',
-                    room: 'Main Auditorium',
+                    title: 'Annual Budget Review',
+                    speaker: 'Amara Okafor (CFO)',
+                    room: 'Executive Boardroom',
                     date: '2025-12-15',
                     startTime: '11:00',
                     endTime: '12:30',
-                    description: 'Transform your data science projects from Jupyter notebooks into production-ready pipelines. Learn about MLOps, model monitoring, and continuous training.',
-                    tags: ['Data Science', 'MLOps', 'Python'],
+                    description: 'Comprehensive review of 2025 budget performance and approval of 2026 financial plan. Discussion of department allocations, investment priorities, and cost optimization strategies.',
+                    tags: ['Finance', 'Budget', 'Planning'],
                     attendees: [1, 5, 8, 11, 14],
                     lastUpdated: null
                 },
                 {
                     id: 6,
-                    title: 'Lunch & Network',
-                    speaker: 'All Attendees',
-                    room: 'Main Auditorium',
+                    title: 'Team Lunch & Networking',
+                    speaker: 'All Team Members',
+                    room: 'Executive Boardroom',
                     date: '2025-12-15',
                     startTime: '12:30',
                     endTime: '14:00',
-                    description: 'Enjoy lunch and connect with fellow attendees, speakers, and sponsors. Great opportunity for networking and discussions.',
-                    tags: ['Networking', 'Break'],
+                    description: 'Enjoy lunch together and connect with colleagues across departments. Great opportunity for cross-team collaboration and informal discussions.',
+                    tags: ['Networking', 'Team Building'],
                     attendees: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
                     lastUpdated: null
                 },
                 {
                     id: 7,
-                    title: 'Building Developer Communities That Thrive',
+                    title: 'Sales Enablement Training',
                     speaker: 'Sophie Turner',
-                    room: 'Innovation Lab',
+                    room: 'Innovation Hub',
                     date: '2025-12-15',
                     startTime: '14:00',
                     endTime: '15:00',
-                    description: 'Learn strategies for building, growing, and maintaining engaged developer communities. From online forums to in-person meetups, discover what works.',
-                    tags: ['Community', 'DevRel', 'Leadership'],
+                    description: 'Training session for sales team on new product features, competitive positioning, and effective demo strategies. Learn how to articulate Copado\'s value proposition to different personas.',
+                    tags: ['Sales', 'Training', 'Enablement'],
                     attendees: [7, 9, 12, 15],
                     lastUpdated: null
                 },
                 {
                     id: 8,
-                    title: 'GraphQL vs REST: Making the Right Choice',
+                    title: 'Engineering Team Sync',
                     speaker: 'Raj Patel',
-                    room: 'Workshop Hall',
+                    room: 'Training Center',
                     date: '2025-12-15',
                     startTime: '14:00',
                     endTime: '15:30',
-                    description: 'Compare GraphQL and REST APIs through real-world examples. Understand when to use each approach and how to implement them effectively.',
-                    tags: ['API', 'GraphQL', 'Backend'],
+                    description: 'Bi-weekly engineering team synchronization covering sprint progress, technical challenges, and architecture decisions. Review of code quality metrics and deployment velocity.',
+                    tags: ['Engineering', 'Agile', 'Development'],
                     attendees: [2, 8, 11, 14],
                     lastUpdated: null
                 },
                 {
                     id: 9,
-                    title: 'Kubernetes in Production: Lessons Learned',
+                    title: 'Security & Compliance Review',
                     speaker: 'Omar Hassan',
-                    room: 'Studio 4',
+                    room: 'Collaboration Space',
                     date: '2025-12-15',
                     startTime: '15:30',
                     endTime: '17:00',
-                    description: 'Real-world lessons from running Kubernetes at scale. Topics include cluster management, resource optimization, and disaster recovery.',
-                    tags: ['Kubernetes', 'DevOps', 'Infrastructure'],
+                    description: 'Quarterly security and compliance review covering SOC2, ISO certifications, and security incident response protocols. Discussion of vulnerability management and penetration testing results.',
+                    tags: ['Security', 'Compliance', 'Governance'],
                     attendees: [4, 10, 13],
                     lastUpdated: null
                 },
                 {
                     id: 10,
-                    title: 'Closing Keynote: Tech Trends 2026',
-                    speaker: 'Isabella Santos',
-                    room: 'Main Auditorium',
+                    title: 'All-Hands Company Meeting',
+                    speaker: 'Isabella Santos (CRO)',
+                    room: 'Executive Boardroom',
                     date: '2025-12-15',
                     startTime: '17:00',
                     endTime: '18:00',
-                    description: 'A forward-looking discussion on emerging technologies and trends that will shape the industry in 2026 and beyond. Q&A session included.',
-                    tags: ['Keynote', 'Trends', 'Future'],
+                    description: 'Monthly all-hands meeting to share company updates, celebrate wins, and address team questions. Includes performance highlights, new hires introductions, and upcoming initiatives.',
+                    tags: ['All-Hands', 'Company', 'Updates'],
                     attendees: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
                     lastUpdated: null
                 }
@@ -206,17 +206,17 @@ class EventManager {
     // STORAGE MANAGEMENT
     // ============================================
     saveToStorage() {
-        localStorage.setItem('eventflow_sessions', JSON.stringify(this.sessions));
-        localStorage.setItem('eventflow_attendees', JSON.stringify(this.attendees));
-        localStorage.setItem('eventflow_rooms', JSON.stringify(this.rooms));
-        localStorage.setItem('eventflow_favorites', JSON.stringify([...this.favorites]));
+        localStorage.setItem('copado_events_sessions', JSON.stringify(this.sessions));
+        localStorage.setItem('copado_events_attendees', JSON.stringify(this.attendees));
+        localStorage.setItem('copado_events_rooms', JSON.stringify(this.rooms));
+        localStorage.setItem('copado_events_favorites', JSON.stringify([...this.favorites]));
     }
 
     loadFromStorage() {
-        const sessions = localStorage.getItem('eventflow_sessions');
-        const attendees = localStorage.getItem('eventflow_attendees');
-        const rooms = localStorage.getItem('eventflow_rooms');
-        const favorites = localStorage.getItem('eventflow_favorites');
+        const sessions = localStorage.getItem('copado_events_sessions');
+        const attendees = localStorage.getItem('copado_events_attendees');
+        const rooms = localStorage.getItem('copado_events_rooms');
+        const favorites = localStorage.getItem('copado_events_favorites');
 
         if (sessions) this.sessions = JSON.parse(sessions);
         if (attendees) this.attendees = JSON.parse(attendees);
@@ -367,10 +367,10 @@ class EventManager {
                 this.showToast('Notifications enabled! You\'ll receive alerts when sessions change.', 'success');
 
                 // Send test notification
-                new Notification('EventFlow Notifications', {
+                new Notification('Copado Events Notifications', {
                     body: 'You\'ll now receive updates about session changes.',
                     icon: '🔔',
-                    tag: 'eventflow-welcome'
+                    tag: 'copado-events-welcome'
                 });
             } else {
                 this.showToast('Notifications blocked. You can enable them in browser settings.', 'warning');
@@ -398,7 +398,7 @@ class EventManager {
         }
     }
 
-    sendNotification(title, body, tag = 'eventflow-update') {
+    sendNotification(title, body, tag = 'copado-events-update') {
         if (this.notificationsEnabled && 'Notification' in window && Notification.permission === 'granted') {
             new Notification(title, {
                 body: body,
@@ -993,10 +993,10 @@ class EventManager {
 
     getRoomClass(room) {
         const roomMap = {
-            'Main Auditorium': 'room-main',
-            'Innovation Lab': 'room-innovation',
-            'Workshop Hall': 'room-workshop',
-            'Studio 4': 'room-studio'
+            'Executive Boardroom': 'room-main',
+            'Innovation Hub': 'room-innovation',
+            'Training Center': 'room-workshop',
+            'Collaboration Space': 'room-studio'
         };
         return roomMap[room] || '';
     }
