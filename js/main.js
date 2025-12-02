@@ -6,6 +6,7 @@ class EventManager {
     constructor() {
         this.sessions = [];
         this.attendees = [];
+        this.speakers = [];
         this.rooms = [];
         this.currentView = 'timeline';
         this.filters = {
@@ -16,6 +17,9 @@ class EventManager {
         };
         this.notificationsEnabled = false;
         this.editingSessionId = null;
+        this.editingAttendeeId = null;
+        this.editingSpeakerId = null;
+        this.editingRoomId = null;
         this.favorites = new Set();
 
         this.init();
@@ -26,180 +30,12 @@ class EventManager {
     // ============================================
     init() {
         this.loadFromStorage();
-        this.initSampleData();
         this.setupEventListeners();
         this.checkNotificationPermission();
+        this.checkSetupState();
         this.render();
         this.updateStats();
         this.populateFilters();
-    }
-
-    initSampleData() {
-        // Only initialize if no data exists
-        if (this.sessions.length === 0) {
-            // Define attendees
-            this.attendees = [
-                { id: 1, name: 'Sarah Chen', email: 'sarah.chen@copado.com' },
-                { id: 2, name: 'Marcus Williams', email: 'marcus.w@copado.com' },
-                { id: 3, name: 'Elena Rodriguez', email: 'elena.r@copado.com' },
-                { id: 4, name: 'James Park', email: 'james.park@copado.com' },
-                { id: 5, name: 'Amara Okafor', email: 'amara.o@copado.com' },
-                { id: 6, name: 'David Kim', email: 'david.kim@copado.com' },
-                { id: 7, name: 'Sophie Turner', email: 'sophie.t@copado.com' },
-                { id: 8, name: 'Raj Patel', email: 'raj.patel@copado.com' },
-                { id: 9, name: 'Isabella Santos', email: 'isabella.s@copado.com' },
-                { id: 10, name: 'Omar Hassan', email: 'omar.h@copado.com' },
-                { id: 11, name: 'Lily Zhang', email: 'lily.zhang@copado.com' },
-                { id: 12, name: 'Alex Morgan', email: 'alex.m@copado.com' },
-                { id: 13, name: 'Nina Kowalski', email: 'nina.k@copado.com' },
-                { id: 14, name: 'Carlos Mendez', email: 'carlos.m@copado.com' },
-                { id: 15, name: 'Aisha Johnson', email: 'aisha.j@copado.com' }
-            ];
-
-            // Define rooms
-            this.rooms = [
-                'Executive Boardroom',
-                'Innovation Hub',
-                'Training Center',
-                'Collaboration Space'
-            ];
-
-            // Define sessions with rich data
-            this.sessions = [
-                {
-                    id: 1,
-                    title: 'Q1 2026 Strategic Planning Session',
-                    speaker: 'Sarah Chen (CEO)',
-                    room: 'Executive Boardroom',
-                    date: '2025-12-15',
-                    startTime: '09:00',
-                    endTime: '10:30',
-                    description: 'Comprehensive review of Q4 2025 achievements and strategic planning for Q1 2026. Discussion of key initiatives, resource allocation, and growth targets for the upcoming quarter.',
-                    tags: ['Strategy', 'Planning', 'Leadership'],
-                    attendees: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                    lastUpdated: null
-                },
-                {
-                    id: 2,
-                    title: 'DevOps Best Practices Workshop',
-                    speaker: 'Marcus Williams',
-                    room: 'Innovation Hub',
-                    date: '2025-12-15',
-                    startTime: '09:00',
-                    endTime: '10:00',
-                    description: 'Hands-on workshop covering Copado DevOps automation best practices. Learn about pipeline optimization, quality gates, and compliance-driven development workflows.',
-                    tags: ['DevOps', 'Automation', 'Training'],
-                    attendees: [2, 5, 8, 11, 14],
-                    lastUpdated: null
-                },
-                {
-                    id: 3,
-                    title: 'Customer Success Review Meeting',
-                    speaker: 'Elena Rodriguez',
-                    room: 'Training Center',
-                    date: '2025-12-15',
-                    startTime: '10:00',
-                    endTime: '11:30',
-                    description: 'Review of customer health scores, renewal forecasts, and expansion opportunities. Discuss strategies to improve customer engagement and reduce churn.',
-                    tags: ['Customer Success', 'Strategy', 'Revenue'],
-                    attendees: [3, 6, 9, 12, 15],
-                    lastUpdated: null
-                },
-                {
-                    id: 4,
-                    title: 'Product Roadmap Discussion',
-                    speaker: 'James Park',
-                    room: 'Collaboration Space',
-                    date: '2025-12-15',
-                    startTime: '11:00',
-                    endTime: '12:00',
-                    description: 'Review upcoming product features and prioritization for the next release cycle. Gather feedback from stakeholders and align on delivery timelines.',
-                    tags: ['Product', 'Roadmap', 'Planning'],
-                    attendees: [4, 7, 10, 13],
-                    lastUpdated: null
-                },
-                {
-                    id: 5,
-                    title: 'Annual Budget Review',
-                    speaker: 'Amara Okafor (CFO)',
-                    room: 'Executive Boardroom',
-                    date: '2025-12-15',
-                    startTime: '11:00',
-                    endTime: '12:30',
-                    description: 'Comprehensive review of 2025 budget performance and approval of 2026 financial plan. Discussion of department allocations, investment priorities, and cost optimization strategies.',
-                    tags: ['Finance', 'Budget', 'Planning'],
-                    attendees: [1, 5, 8, 11, 14],
-                    lastUpdated: null
-                },
-                {
-                    id: 6,
-                    title: 'Team Lunch & Networking',
-                    speaker: 'All Team Members',
-                    room: 'Executive Boardroom',
-                    date: '2025-12-15',
-                    startTime: '12:30',
-                    endTime: '14:00',
-                    description: 'Enjoy lunch together and connect with colleagues across departments. Great opportunity for cross-team collaboration and informal discussions.',
-                    tags: ['Networking', 'Team Building'],
-                    attendees: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-                    lastUpdated: null
-                },
-                {
-                    id: 7,
-                    title: 'Sales Enablement Training',
-                    speaker: 'Sophie Turner',
-                    room: 'Innovation Hub',
-                    date: '2025-12-15',
-                    startTime: '14:00',
-                    endTime: '15:00',
-                    description: 'Training session for sales team on new product features, competitive positioning, and effective demo strategies. Learn how to articulate Copado\'s value proposition to different personas.',
-                    tags: ['Sales', 'Training', 'Enablement'],
-                    attendees: [7, 9, 12, 15],
-                    lastUpdated: null
-                },
-                {
-                    id: 8,
-                    title: 'Engineering Team Sync',
-                    speaker: 'Raj Patel',
-                    room: 'Training Center',
-                    date: '2025-12-15',
-                    startTime: '14:00',
-                    endTime: '15:30',
-                    description: 'Bi-weekly engineering team synchronization covering sprint progress, technical challenges, and architecture decisions. Review of code quality metrics and deployment velocity.',
-                    tags: ['Engineering', 'Agile', 'Development'],
-                    attendees: [2, 8, 11, 14],
-                    lastUpdated: null
-                },
-                {
-                    id: 9,
-                    title: 'Security & Compliance Review',
-                    speaker: 'Omar Hassan',
-                    room: 'Collaboration Space',
-                    date: '2025-12-15',
-                    startTime: '15:30',
-                    endTime: '17:00',
-                    description: 'Quarterly security and compliance review covering SOC2, ISO certifications, and security incident response protocols. Discussion of vulnerability management and penetration testing results.',
-                    tags: ['Security', 'Compliance', 'Governance'],
-                    attendees: [4, 10, 13],
-                    lastUpdated: null
-                },
-                {
-                    id: 10,
-                    title: 'All-Hands Company Meeting',
-                    speaker: 'Isabella Santos (CRO)',
-                    room: 'Executive Boardroom',
-                    date: '2025-12-15',
-                    startTime: '17:00',
-                    endTime: '18:00',
-                    description: 'Monthly all-hands meeting to share company updates, celebrate wins, and address team questions. Includes performance highlights, new hires introductions, and upcoming initiatives.',
-                    tags: ['All-Hands', 'Company', 'Updates'],
-                    attendees: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-                    lastUpdated: null
-                }
-            ];
-
-            this.saveToStorage();
-        }
     }
 
     // ============================================
@@ -208,6 +44,7 @@ class EventManager {
     saveToStorage() {
         localStorage.setItem('copado_events_sessions', JSON.stringify(this.sessions));
         localStorage.setItem('copado_events_attendees', JSON.stringify(this.attendees));
+        localStorage.setItem('copado_events_speakers', JSON.stringify(this.speakers));
         localStorage.setItem('copado_events_rooms', JSON.stringify(this.rooms));
         localStorage.setItem('copado_events_favorites', JSON.stringify([...this.favorites]));
     }
@@ -215,19 +52,53 @@ class EventManager {
     loadFromStorage() {
         const sessions = localStorage.getItem('copado_events_sessions');
         const attendees = localStorage.getItem('copado_events_attendees');
+        const speakers = localStorage.getItem('copado_events_speakers');
         const rooms = localStorage.getItem('copado_events_rooms');
         const favorites = localStorage.getItem('copado_events_favorites');
 
         if (sessions) this.sessions = JSON.parse(sessions);
         if (attendees) this.attendees = JSON.parse(attendees);
+        if (speakers) this.speakers = JSON.parse(speakers);
         if (rooms) this.rooms = JSON.parse(rooms);
         if (favorites) this.favorites = new Set(JSON.parse(favorites));
+    }
+
+    // ============================================
+    // SETUP STATE MANAGEMENT
+    // ============================================
+    checkSetupState() {
+        const setupGuide = document.getElementById('setupGuide');
+        const sessionsContainer = document.getElementById('sessionsContainer');
+        const emptyState = document.getElementById('emptyState');
+
+        // Show setup guide if no data exists
+        if (this.sessions.length === 0 &&
+            this.attendees.length === 0 &&
+            this.speakers.length === 0 &&
+            this.rooms.length === 0) {
+            setupGuide.classList.remove('hidden');
+            sessionsContainer.classList.add('hidden');
+            emptyState.classList.add('hidden');
+        } else {
+            setupGuide.classList.add('hidden');
+            sessionsContainer.classList.remove('hidden');
+        }
     }
 
     // ============================================
     // EVENT LISTENERS
     // ============================================
     setupEventListeners() {
+        // Setup guide
+        document.getElementById('startSetup')?.addEventListener('click', () => {
+            this.openManagementModal('attendees');
+        });
+
+        // Management button
+        document.getElementById('manageDataBtn').addEventListener('click', () => {
+            this.openManagementModal('attendees');
+        });
+
         // Search
         const searchInput = document.getElementById('searchInput');
         searchInput.addEventListener('input', (e) => {
@@ -292,6 +163,61 @@ class EventManager {
             this.hideNotificationBanner();
         });
 
+        // Management tabs
+        document.querySelectorAll('.management-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                const tabName = e.currentTarget.dataset.tab;
+                this.switchManagementTab(tabName);
+            });
+        });
+
+        // Attendee form
+        document.getElementById('attendeeForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.addAttendee();
+        });
+
+        // Speaker form
+        document.getElementById('speakerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.addSpeaker();
+        });
+
+        // Room form
+        document.getElementById('roomForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.addRoom();
+        });
+
+        // Edit forms
+        document.getElementById('editAttendeeForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.saveAttendeeEdit();
+        });
+
+        document.getElementById('editSpeakerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.saveSpeakerEdit();
+        });
+
+        document.getElementById('editRoomForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.saveRoomEdit();
+        });
+
+        // Cancel edit buttons
+        document.getElementById('cancelEditAttendee').addEventListener('click', () => {
+            this.closeModal('editAttendeeModal');
+        });
+
+        document.getElementById('cancelEditSpeaker').addEventListener('click', () => {
+            this.closeModal('editSpeakerModal');
+        });
+
+        document.getElementById('cancelEditRoom').addEventListener('click', () => {
+            this.closeModal('editRoomModal');
+        });
+
         // Session form
         document.getElementById('sessionForm').addEventListener('submit', (e) => {
             e.preventDefault();
@@ -327,6 +253,345 @@ class EventManager {
         } else {
             clearBtn.classList.add('hidden');
         }
+    }
+
+    // ============================================
+    // MANAGEMENT MODAL
+    // ============================================
+    openManagementModal(tab = 'attendees') {
+        this.switchManagementTab(tab);
+        this.renderManagementLists();
+        this.openModal('managementModal');
+    }
+
+    switchManagementTab(tabName) {
+        // Update tabs
+        document.querySelectorAll('.management-tab').forEach(tab => {
+            if (tab.dataset.tab === tabName) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
+        });
+
+        // Update content
+        document.querySelectorAll('.management-tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        document.getElementById(`${tabName}Tab`).classList.add('active');
+
+        this.renderManagementLists();
+    }
+
+    renderManagementLists() {
+        this.renderAttendeesList();
+        this.renderSpeakersList();
+        this.renderRoomsList();
+    }
+
+    // ============================================
+    // ATTENDEE MANAGEMENT
+    // ============================================
+    addAttendee() {
+        const name = document.getElementById('attendeeName').value.trim();
+        const email = document.getElementById('attendeeEmail').value.trim();
+
+        if (!name || !email) {
+            this.showToast('Please fill in all fields', 'error');
+            return;
+        }
+
+        const newAttendee = {
+            id: Date.now(),
+            name,
+            email
+        };
+
+        this.attendees.push(newAttendee);
+        this.saveToStorage();
+        this.renderAttendeesList();
+        this.populateFilters();
+        this.checkSetupState();
+        document.getElementById('attendeeForm').reset();
+        this.showToast('Attendee added successfully', 'success');
+    }
+
+    renderAttendeesList() {
+        const container = document.getElementById('attendeesList');
+
+        if (this.attendees.length === 0) {
+            container.innerHTML = '<div class="empty-list-message">No attendees yet. Add your first attendee above.</div>';
+            return;
+        }
+
+        container.innerHTML = this.attendees.map(attendee => `
+            <div class="item-card">
+                <div class="item-info">
+                    <div class="item-name">${attendee.name}</div>
+                    <div class="item-detail">${attendee.email}</div>
+                </div>
+                <div class="item-actions">
+                    <button class="btn btn-ghost" onclick="window.eventManager.editAttendee(${attendee.id})">Edit</button>
+                    <button class="btn btn-ghost" onclick="window.eventManager.deleteAttendee(${attendee.id})">Delete</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    editAttendee(id) {
+        const attendee = this.attendees.find(a => a.id === id);
+        if (!attendee) return;
+
+        this.editingAttendeeId = id;
+        document.getElementById('editAttendeeName').value = attendee.name;
+        document.getElementById('editAttendeeEmail').value = attendee.email;
+        this.openModal('editAttendeeModal');
+    }
+
+    saveAttendeeEdit() {
+        const attendee = this.attendees.find(a => a.id === this.editingAttendeeId);
+        if (!attendee) return;
+
+        attendee.name = document.getElementById('editAttendeeName').value.trim();
+        attendee.email = document.getElementById('editAttendeeEmail').value.trim();
+
+        this.saveToStorage();
+        this.renderAttendeesList();
+        this.populateFilters();
+        this.render();
+        this.closeModal('editAttendeeModal');
+        this.showToast('Attendee updated successfully', 'success');
+    }
+
+    deleteAttendee(id) {
+        const attendee = this.attendees.find(a => a.id === id);
+        if (!attendee) return;
+
+        // Check if attendee is used in any session
+        const usedInSessions = this.sessions.filter(s => s.attendees.includes(id));
+        if (usedInSessions.length > 0) {
+            this.showToast('Cannot delete attendee assigned to sessions', 'error');
+            return;
+        }
+
+        if (confirm(`Delete ${attendee.name}?`)) {
+            this.attendees = this.attendees.filter(a => a.id !== id);
+            this.saveToStorage();
+            this.renderAttendeesList();
+            this.populateFilters();
+            this.checkSetupState();
+            this.showToast('Attendee deleted', 'success');
+        }
+    }
+
+    // ============================================
+    // SPEAKER MANAGEMENT
+    // ============================================
+    addSpeaker() {
+        const name = document.getElementById('speakerName').value.trim();
+        const title = document.getElementById('speakerTitle').value.trim();
+        const bio = document.getElementById('speakerBio').value.trim();
+
+        if (!name || !title) {
+            this.showToast('Please fill in all required fields', 'error');
+            return;
+        }
+
+        const newSpeaker = {
+            id: Date.now(),
+            name,
+            title,
+            bio
+        };
+
+        this.speakers.push(newSpeaker);
+        this.saveToStorage();
+        this.renderSpeakersList();
+        this.populateSpeakersDropdown();
+        this.checkSetupState();
+        document.getElementById('speakerForm').reset();
+        this.showToast('Speaker added successfully', 'success');
+    }
+
+    renderSpeakersList() {
+        const container = document.getElementById('speakersList');
+
+        if (this.speakers.length === 0) {
+            container.innerHTML = '<div class="empty-list-message">No speakers yet. Add your first speaker above.</div>';
+            return;
+        }
+
+        container.innerHTML = this.speakers.map(speaker => `
+            <div class="item-card">
+                <div class="item-info">
+                    <div class="item-name">${speaker.name}</div>
+                    <div class="item-detail"><span class="item-detail-label">Title:</span> ${speaker.title}</div>
+                    ${speaker.bio ? `<div class="item-detail">${speaker.bio}</div>` : ''}
+                </div>
+                <div class="item-actions">
+                    <button class="btn btn-ghost" onclick="window.eventManager.editSpeaker(${speaker.id})">Edit</button>
+                    <button class="btn btn-ghost" onclick="window.eventManager.deleteSpeaker(${speaker.id})">Delete</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    editSpeaker(id) {
+        const speaker = this.speakers.find(s => s.id === id);
+        if (!speaker) return;
+
+        this.editingSpeakerId = id;
+        document.getElementById('editSpeakerName').value = speaker.name;
+        document.getElementById('editSpeakerTitle').value = speaker.title;
+        document.getElementById('editSpeakerBio').value = speaker.bio || '';
+        this.openModal('editSpeakerModal');
+    }
+
+    saveSpeakerEdit() {
+        const speaker = this.speakers.find(s => s.id === this.editingSpeakerId);
+        if (!speaker) return;
+
+        speaker.name = document.getElementById('editSpeakerName').value.trim();
+        speaker.title = document.getElementById('editSpeakerTitle').value.trim();
+        speaker.bio = document.getElementById('editSpeakerBio').value.trim();
+
+        this.saveToStorage();
+        this.renderSpeakersList();
+        this.populateSpeakersDropdown();
+        this.render();
+        this.closeModal('editSpeakerModal');
+        this.showToast('Speaker updated successfully', 'success');
+    }
+
+    deleteSpeaker(id) {
+        const speaker = this.speakers.find(s => s.id === id);
+        if (!speaker) return;
+
+        // Check if speaker is used in any session
+        const usedInSessions = this.sessions.filter(s => s.speakerId === id);
+        if (usedInSessions.length > 0) {
+            this.showToast('Cannot delete speaker assigned to sessions', 'error');
+            return;
+        }
+
+        if (confirm(`Delete ${speaker.name}?`)) {
+            this.speakers = this.speakers.filter(s => s.id !== id);
+            this.saveToStorage();
+            this.renderSpeakersList();
+            this.populateSpeakersDropdown();
+            this.checkSetupState();
+            this.showToast('Speaker deleted', 'success');
+        }
+    }
+
+    // ============================================
+    // ROOM MANAGEMENT
+    // ============================================
+    addRoom() {
+        const name = document.getElementById('roomName').value.trim();
+        const color = document.getElementById('roomColor').value;
+
+        if (!name || !color) {
+            this.showToast('Please fill in all fields', 'error');
+            return;
+        }
+
+        const newRoom = {
+            id: Date.now(),
+            name,
+            color
+        };
+
+        this.rooms.push(newRoom);
+        this.saveToStorage();
+        this.renderRoomsList();
+        this.populateFilters();
+        this.populateRoomsDropdown();
+        this.checkSetupState();
+        document.getElementById('roomForm').reset();
+        this.showToast('Room added successfully', 'success');
+    }
+
+    renderRoomsList() {
+        const container = document.getElementById('roomsList');
+
+        if (this.rooms.length === 0) {
+            container.innerHTML = '<div class="empty-list-message">No rooms yet. Add your first room above.</div>';
+            return;
+        }
+
+        container.innerHTML = this.rooms.map(room => `
+            <div class="item-card">
+                <div class="room-color-indicator ${room.color}"></div>
+                <div class="item-info">
+                    <div class="item-name">${room.name}</div>
+                    <div class="item-detail"><span class="item-detail-label">Color:</span> ${this.getColorName(room.color)}</div>
+                </div>
+                <div class="item-actions">
+                    <button class="btn btn-ghost" onclick="window.eventManager.editRoom(${room.id})">Edit</button>
+                    <button class="btn btn-ghost" onclick="window.eventManager.deleteRoom(${room.id})">Delete</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    editRoom(id) {
+        const room = this.rooms.find(r => r.id === id);
+        if (!room) return;
+
+        this.editingRoomId = id;
+        document.getElementById('editRoomName').value = room.name;
+        document.getElementById('editRoomColor').value = room.color;
+        this.openModal('editRoomModal');
+    }
+
+    saveRoomEdit() {
+        const room = this.rooms.find(r => r.id === this.editingRoomId);
+        if (!room) return;
+
+        room.name = document.getElementById('editRoomName').value.trim();
+        room.color = document.getElementById('editRoomColor').value;
+
+        this.saveToStorage();
+        this.renderRoomsList();
+        this.populateFilters();
+        this.populateRoomsDropdown();
+        this.render();
+        this.closeModal('editRoomModal');
+        this.showToast('Room updated successfully', 'success');
+    }
+
+    deleteRoom(id) {
+        const room = this.rooms.find(r => r.id === id);
+        if (!room) return;
+
+        // Check if room is used in any session
+        const usedInSessions = this.sessions.filter(s => s.roomId === id);
+        if (usedInSessions.length > 0) {
+            this.showToast('Cannot delete room assigned to sessions', 'error');
+            return;
+        }
+
+        if (confirm(`Delete ${room.name}?`)) {
+            this.rooms = this.rooms.filter(r => r.id !== id);
+            this.saveToStorage();
+            this.renderRoomsList();
+            this.populateFilters();
+            this.populateRoomsDropdown();
+            this.checkSetupState();
+            this.updateStats();
+            this.showToast('Room deleted', 'success');
+        }
+    }
+
+    getColorName(colorClass) {
+        const colorMap = {
+            'room-1': 'Copado Blue',
+            'room-2': 'Teal',
+            'room-3': 'Orange',
+            'room-4': 'Sky Blue'
+        };
+        return colorMap[colorClass] || colorClass;
     }
 
     // ============================================
@@ -417,9 +682,12 @@ class EventManager {
             // Search filter
             if (this.filters.search) {
                 const searchLower = this.filters.search.toLowerCase();
+                const speaker = this.speakers.find(s => s.id === session.speakerId);
+                const speakerName = speaker ? speaker.name : '';
+
                 const matchesSearch =
                     session.title.toLowerCase().includes(searchLower) ||
-                    session.speaker.toLowerCase().includes(searchLower) ||
+                    speakerName.toLowerCase().includes(searchLower) ||
                     session.description.toLowerCase().includes(searchLower) ||
                     session.tags.some(tag => tag.toLowerCase().includes(searchLower));
 
@@ -427,8 +695,11 @@ class EventManager {
             }
 
             // Room filter
-            if (this.filters.room && session.room !== this.filters.room) {
-                return false;
+            if (this.filters.room) {
+                const roomId = parseInt(this.filters.room);
+                if (session.roomId !== roomId) {
+                    return false;
+                }
             }
 
             // Attendee filter
@@ -476,8 +747,8 @@ class EventManager {
         roomFilter.innerHTML = '<option value="">All Rooms</option>';
         this.rooms.forEach(room => {
             const option = document.createElement('option');
-            option.value = room;
-            option.textContent = room;
+            option.value = room.id;
+            option.textContent = room.name;
             roomFilter.appendChild(option);
         });
         roomFilter.value = currentRoomValue;
@@ -493,6 +764,32 @@ class EventManager {
             attendeeFilter.appendChild(option);
         });
         attendeeFilter.value = currentAttendeeValue;
+    }
+
+    populateSpeakersDropdown() {
+        const speakerSelect = document.getElementById('sessionSpeaker');
+        const currentValue = speakerSelect.value;
+        speakerSelect.innerHTML = '<option value="">Select Speaker</option>';
+        this.speakers.forEach(speaker => {
+            const option = document.createElement('option');
+            option.value = speaker.id;
+            option.textContent = `${speaker.name} - ${speaker.title}`;
+            speakerSelect.appendChild(option);
+        });
+        speakerSelect.value = currentValue;
+    }
+
+    populateRoomsDropdown() {
+        const roomSelect = document.getElementById('sessionRoom');
+        const currentValue = roomSelect.value;
+        roomSelect.innerHTML = '<option value="">Select Room</option>';
+        this.rooms.forEach(room => {
+            const option = document.createElement('option');
+            option.value = room.id;
+            option.textContent = room.name;
+            roomSelect.appendChild(option);
+        });
+        roomSelect.value = currentValue;
     }
 
     // ============================================
@@ -524,9 +821,15 @@ class EventManager {
         const container = document.getElementById('sessionsContainer');
         const emptyState = document.getElementById('emptyState');
 
-        if (filteredSessions.length === 0) {
+        if (filteredSessions.length === 0 && this.sessions.length > 0) {
             container.innerHTML = '';
             emptyState.classList.remove('hidden');
+            return;
+        }
+
+        if (filteredSessions.length === 0) {
+            container.innerHTML = '';
+            emptyState.classList.add('hidden');
             return;
         }
 
@@ -546,7 +849,13 @@ class EventManager {
     }
 
     renderSessionCard(session) {
-        const roomClass = this.getRoomClass(session.room);
+        const room = this.rooms.find(r => r.id === session.roomId);
+        const roomClass = room ? room.color : '';
+        const roomName = room ? room.name : 'Unknown Room';
+
+        const speaker = this.speakers.find(s => s.id === session.speakerId);
+        const speakerName = speaker ? `${speaker.name} - ${speaker.title}` : 'Unknown Speaker';
+
         const isFavorite = this.favorites.has(session.id);
         const favoriteClass = isFavorite ? 'active' : '';
         const updatedClass = session.lastUpdated ? 'updated' : '';
@@ -587,11 +896,11 @@ class EventManager {
                                 </button>
                             </div>
                         </div>
-                        <div class="session-speaker">${session.speaker}</div>
+                        <div class="session-speaker">${speakerName}</div>
                         <div class="session-meta">
                             <div class="meta-item">
                                 <span class="meta-icon">📍</span>
-                                <span class="room-badge ${roomClass}">${session.room}</span>
+                                <span class="room-badge ${roomClass}">${roomName}</span>
                             </div>
                             <div class="meta-item">
                                 <span class="meta-icon">⏱️</span>
@@ -607,6 +916,7 @@ class EventManager {
                         <div class="session-tags">
                             ${session.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
+                        ${attendeeNames.length > 0 ? `
                         <div class="session-attendees">
                             <span class="attendees-label">Attending:</span>
                             <div class="attendees-list">
@@ -618,6 +928,7 @@ class EventManager {
                                     : ''}
                             </div>
                         </div>
+                        ` : ''}
                     </div>
                 </div>
             </div>
@@ -665,18 +976,23 @@ class EventManager {
         const session = this.sessions.find(s => s.id === sessionId);
         if (!session) return;
 
+        const room = this.rooms.find(r => r.id === session.roomId);
+        const roomClass = room ? room.color : '';
+        const roomName = room ? room.name : 'Unknown Room';
+
+        const speaker = this.speakers.find(s => s.id === session.speakerId);
+        const speakerName = speaker ? `${speaker.name} - ${speaker.title}` : 'Unknown Speaker';
+
         const attendeeDetails = session.attendees
             .map(id => this.attendees.find(a => a.id === id))
             .filter(a => a);
 
-        const roomClass = this.getRoomClass(session.room);
-
         const modalContent = `
             <div class="modal-session-header">
                 <h2 class="modal-session-title">${session.title}</h2>
-                <div class="modal-session-speaker">By ${session.speaker}</div>
+                <div class="modal-session-speaker">By ${speakerName}</div>
                 <div class="session-meta">
-                    <span class="room-badge ${roomClass}">${session.room}</span>
+                    <span class="room-badge ${roomClass}">${roomName}</span>
                     ${session.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                 </div>
             </div>
@@ -705,6 +1021,7 @@ class EventManager {
                 <p class="modal-description">${session.description}</p>
             </div>
 
+            ${attendeeDetails.length > 0 ? `
             <div class="modal-section">
                 <h3 class="modal-section-title">Attendees</h3>
                 <div class="modal-attendees-grid">
@@ -715,6 +1032,7 @@ class EventManager {
                     `).join('')}
                 </div>
             </div>
+            ` : ''}
         `;
 
         document.querySelector('#sessionModal .modal-body').innerHTML = modalContent;
@@ -722,14 +1040,26 @@ class EventManager {
     }
 
     openAddSessionModal() {
+        // Check if basic data exists
+        if (this.speakers.length === 0 || this.rooms.length === 0 || this.attendees.length === 0) {
+            this.showToast('Please add speakers, rooms, and attendees first', 'warning');
+            setTimeout(() => this.openManagementModal('attendees'), 1000);
+            return;
+        }
+
         this.editingSessionId = null;
         document.getElementById('editModalTitle').textContent = 'Add New Session';
 
         // Reset form
         document.getElementById('sessionForm').reset();
-        document.getElementById('sessionDate').value = '2025-12-15';
 
-        // Populate attendee checkboxes
+        // Set default date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('sessionDate').value = today;
+
+        // Populate dropdowns
+        this.populateSpeakersDropdown();
+        this.populateRoomsDropdown();
         this.populateAttendeeCheckboxes([]);
 
         this.openModal('editModal');
@@ -744,13 +1074,18 @@ class EventManager {
 
         // Populate form
         document.getElementById('sessionTitle').value = session.title;
-        document.getElementById('sessionSpeaker').value = session.speaker;
-        document.getElementById('sessionRoom').value = session.room;
         document.getElementById('sessionDate').value = session.date;
         document.getElementById('sessionStartTime').value = session.startTime;
         document.getElementById('sessionEndTime').value = session.endTime;
         document.getElementById('sessionDescription').value = session.description;
         document.getElementById('sessionTags').value = session.tags.join(', ');
+
+        // Populate dropdowns
+        this.populateSpeakersDropdown();
+        this.populateRoomsDropdown();
+
+        document.getElementById('sessionSpeaker').value = session.speakerId;
+        document.getElementById('sessionRoom').value = session.roomId;
 
         // Populate attendee checkboxes
         this.populateAttendeeCheckboxes(session.attendees);
@@ -760,6 +1095,12 @@ class EventManager {
 
     populateAttendeeCheckboxes(selectedIds) {
         const container = document.getElementById('attendeeCheckboxes');
+
+        if (this.attendees.length === 0) {
+            container.innerHTML = '<div class="empty-list-message">No attendees available</div>';
+            return;
+        }
+
         container.innerHTML = this.attendees.map(attendee => `
             <label class="checkbox-label">
                 <input type="checkbox" value="${attendee.id}"
@@ -772,8 +1113,8 @@ class EventManager {
     saveSession() {
         // Get form values
         const title = document.getElementById('sessionTitle').value.trim();
-        const speaker = document.getElementById('sessionSpeaker').value.trim();
-        const room = document.getElementById('sessionRoom').value;
+        const speakerId = parseInt(document.getElementById('sessionSpeaker').value);
+        const roomId = parseInt(document.getElementById('sessionRoom').value);
         const date = document.getElementById('sessionDate').value;
         const startTime = document.getElementById('sessionStartTime').value;
         const endTime = document.getElementById('sessionEndTime').value;
@@ -787,7 +1128,7 @@ class EventManager {
         ).map(input => parseInt(input.value));
 
         // Validation
-        if (!title || !speaker || !room || !date || !startTime || !endTime) {
+        if (!title || !speakerId || !roomId || !date || !startTime || !endTime) {
             this.showToast('Please fill in all required fields', 'error');
             return;
         }
@@ -798,8 +1139,8 @@ class EventManager {
             if (session) {
                 const oldTitle = session.title;
                 session.title = title;
-                session.speaker = speaker;
-                session.room = room;
+                session.speakerId = speakerId;
+                session.roomId = roomId;
                 session.date = date;
                 session.startTime = startTime;
                 session.endTime = endTime;
@@ -826,8 +1167,8 @@ class EventManager {
             const newSession = {
                 id: Date.now(),
                 title,
-                speaker,
-                room,
+                speakerId,
+                roomId,
                 date,
                 startTime,
                 endTime,
@@ -841,7 +1182,7 @@ class EventManager {
             this.saveToStorage();
             this.render();
             this.updateStats();
-            this.populateFilters();
+            this.checkSetupState();
             this.closeModal('editModal');
             this.showToast('Session added successfully', 'success');
 
@@ -864,6 +1205,7 @@ class EventManager {
             this.saveToStorage();
             this.render();
             this.updateStats();
+            this.checkSetupState();
             this.showToast('Session deleted', 'success');
 
             // Send notification
@@ -989,16 +1331,6 @@ class EventManager {
         } else {
             return `${mins}m`;
         }
-    }
-
-    getRoomClass(room) {
-        const roomMap = {
-            'Executive Boardroom': 'room-main',
-            'Innovation Hub': 'room-innovation',
-            'Training Center': 'room-workshop',
-            'Collaboration Space': 'room-studio'
-        };
-        return roomMap[room] || '';
     }
 
     truncateText(text, maxLength) {

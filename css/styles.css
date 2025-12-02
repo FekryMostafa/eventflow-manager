@@ -257,11 +257,18 @@ body {
 .btn-secondary {
     background: var(--secondary);
     color: white;
+    box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.4);
 }
 
 .btn-secondary:hover {
     background: #FF1A4D;
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+}
+
+.btn-large {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
 }
 
 .btn-ghost {
@@ -884,6 +891,93 @@ body {
 }
 
 /* ============================================
+   SETUP GUIDE
+   ============================================ */
+.setup-guide {
+    text-align: center;
+    padding: var(--space-2xl);
+    background: linear-gradient(135deg, var(--bg-medium), var(--bg-light));
+    border: 2px solid var(--border);
+    border-radius: var(--radius-xl);
+    margin-top: var(--space-2xl);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.setup-icon {
+    font-size: 5rem;
+    margin-bottom: var(--space-lg);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.setup-guide h2 {
+    font-size: 2rem;
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+}
+
+.setup-description {
+    color: var(--text-secondary);
+    font-size: 1.125rem;
+    margin-bottom: var(--space-xl);
+}
+
+.setup-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    text-align: left;
+}
+
+.setup-step {
+    background: var(--bg-dark);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    display: flex;
+    gap: var(--space-md);
+    transition: all var(--transition-base);
+}
+
+.setup-step:hover {
+    border-color: var(--primary);
+    transform: translateY(-4px);
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+}
+
+.step-content h3 {
+    font-size: 1.125rem;
+    margin-bottom: var(--space-xs);
+    color: var(--text-primary);
+}
+
+.step-content p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* ============================================
    MODAL
    ============================================ */
 .modal {
@@ -1069,6 +1163,10 @@ body {
    ============================================ */
 .modal-form {
     max-width: 900px;
+}
+
+.modal-wide {
+    max-width: 1100px;
 }
 
 .modal-form h2 {
@@ -1258,6 +1356,168 @@ body {
 .toast-close:hover {
     background: var(--bg-light);
     color: var(--text-primary);
+}
+
+/* ============================================
+   MANAGEMENT INTERFACE
+   ============================================ */
+.management-tabs {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: 2px solid var(--border);
+}
+
+.management-tab {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 0.75rem 1.25rem;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-family: var(--font-primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    border-bottom: 3px solid transparent;
+}
+
+.management-tab:hover {
+    background: var(--bg-light);
+    color: var(--text-primary);
+}
+
+.management-tab.active {
+    background: var(--bg-dark);
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.tab-icon {
+    font-size: 1.25rem;
+}
+
+.management-tab-content {
+    display: none;
+}
+
+.management-tab-content.active {
+    display: block;
+}
+
+.management-section {
+    margin-bottom: var(--space-2xl);
+}
+
+.management-section h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+    padding-bottom: var(--space-sm);
+    border-bottom: 2px solid var(--border);
+}
+
+.management-form {
+    background: var(--bg-dark);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+
+.form-group-button {
+    display: flex;
+    align-items: flex-end;
+}
+
+.items-list {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.item-card {
+    background: var(--bg-dark);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-lg);
+    transition: all var(--transition-base);
+}
+
+.item-card:hover {
+    border-color: var(--primary);
+    transform: translateX(4px);
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.item-detail {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.item-detail-label {
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.item-actions {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.item-actions .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.room-color-indicator {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border);
+}
+
+.room-color-indicator.room-1 {
+    background: var(--room-1);
+}
+
+.room-color-indicator.room-2 {
+    background: var(--room-2);
+}
+
+.room-color-indicator.room-3 {
+    background: var(--room-3);
+}
+
+.room-color-indicator.room-4 {
+    background: var(--room-4);
+}
+
+.empty-list-message {
+    text-align: center;
+    padding: var(--space-2xl);
+    color: var(--text-muted);
+    font-style: italic;
 }
 
 /* ============================================

@@ -40,6 +40,10 @@
                     <button id="notificationToggle" class="btn btn-icon" title="Notification Status">
                         <span class="notification-status">🔔</span>
                     </button>
+                    <button id="manageDataBtn" class="btn btn-secondary">
+                        <span class="btn-icon">⚙️</span>
+                        Manage
+                    </button>
                     <button id="addSessionBtn" class="btn btn-primary">
                         <span class="btn-icon">+</span>
                         Add Session
@@ -136,6 +140,39 @@
                 <h2>No Sessions Found</h2>
                 <p>Try adjusting your filters or search criteria</p>
             </div>
+
+            <!-- Setup Guide -->
+            <div id="setupGuide" class="setup-guide hidden">
+                <div class="setup-icon">🎯</div>
+                <h2>Welcome to Copado Events</h2>
+                <p class="setup-description">Get started by setting up your event management system in three easy steps:</p>
+                <div class="setup-steps">
+                    <div class="setup-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Add Attendees</h3>
+                            <p>Create profiles for people who will attend your events</p>
+                        </div>
+                    </div>
+                    <div class="setup-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Add Speakers</h3>
+                            <p>Register speakers who will lead sessions</p>
+                        </div>
+                    </div>
+                    <div class="setup-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Create Rooms</h3>
+                            <p>Set up venues where sessions will take place</p>
+                        </div>
+                    </div>
+                </div>
+                <button id="startSetup" class="btn btn-primary btn-large">
+                    Get Started
+                </button>
+            </div>
         </div>
     </main>
 
@@ -168,16 +205,14 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="sessionSpeaker">Speaker *</label>
-                            <input type="text" id="sessionSpeaker" required />
+                            <select id="sessionSpeaker" required>
+                                <option value="">Select Speaker</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="sessionRoom">Room *</label>
                             <select id="sessionRoom" required>
                                 <option value="">Select Room</option>
-                                <option value="Executive Boardroom">Executive Boardroom</option>
-                                <option value="Innovation Hub">Innovation Hub</option>
-                                <option value="Training Center">Training Center</option>
-                                <option value="Collaboration Space">Collaboration Space</option>
                             </select>
                         </div>
                     </div>
@@ -223,6 +258,234 @@
                     <div class="form-actions">
                         <button type="button" class="btn btn-ghost" id="cancelEdit">Cancel</button>
                         <button type="submit" class="btn btn-primary">Save Session</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Management Modal -->
+    <div id="managementModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-wide">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <h2>Data Management</h2>
+
+                <!-- Tabs -->
+                <div class="management-tabs">
+                    <button class="management-tab active" data-tab="attendees">
+                        <span class="tab-icon">👥</span>
+                        Attendees
+                    </button>
+                    <button class="management-tab" data-tab="speakers">
+                        <span class="tab-icon">🎤</span>
+                        Speakers
+                    </button>
+                    <button class="management-tab" data-tab="rooms">
+                        <span class="tab-icon">📍</span>
+                        Rooms
+                    </button>
+                </div>
+
+                <!-- Attendees Tab -->
+                <div id="attendeesTab" class="management-tab-content active">
+                    <div class="management-section">
+                        <h3>Add Attendee</h3>
+                        <form id="attendeeForm" class="management-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="attendeeName">Name *</label>
+                                    <input type="text" id="attendeeName" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="attendeeEmail">Email *</label>
+                                    <input type="email" id="attendeeEmail" required />
+                                </div>
+                                <div class="form-group-button">
+                                    <button type="submit" class="btn btn-primary">
+                                        <span class="btn-icon">+</span>
+                                        Add Attendee
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="management-section">
+                        <h3>Manage Attendees</h3>
+                        <div id="attendeesList" class="items-list">
+                            <!-- Dynamically populated -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Speakers Tab -->
+                <div id="speakersTab" class="management-tab-content">
+                    <div class="management-section">
+                        <h3>Add Speaker</h3>
+                        <form id="speakerForm" class="management-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="speakerName">Name *</label>
+                                    <input type="text" id="speakerName" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="speakerTitle">Title *</label>
+                                    <input type="text" id="speakerTitle" required />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group full-width">
+                                    <label for="speakerBio">Bio</label>
+                                    <textarea id="speakerBio" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <span class="btn-icon">+</span>
+                                    Add Speaker
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="management-section">
+                        <h3>Manage Speakers</h3>
+                        <div id="speakersList" class="items-list">
+                            <!-- Dynamically populated -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rooms Tab -->
+                <div id="roomsTab" class="management-tab-content">
+                    <div class="management-section">
+                        <h3>Add Room</h3>
+                        <form id="roomForm" class="management-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="roomName">Room Name *</label>
+                                    <input type="text" id="roomName" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="roomColor">Color Theme *</label>
+                                    <select id="roomColor" required>
+                                        <option value="">Select Color</option>
+                                        <option value="room-1">Copado Blue</option>
+                                        <option value="room-2">Teal</option>
+                                        <option value="room-3">Orange</option>
+                                        <option value="room-4">Sky Blue</option>
+                                    </select>
+                                </div>
+                                <div class="form-group-button">
+                                    <button type="submit" class="btn btn-primary">
+                                        <span class="btn-icon">+</span>
+                                        Add Room
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="management-section">
+                        <h3>Manage Rooms</h3>
+                        <div id="roomsList" class="items-list">
+                            <!-- Dynamically populated -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Attendee Modal -->
+    <div id="editAttendeeModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-form">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <h2>Edit Attendee</h2>
+                <form id="editAttendeeForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editAttendeeName">Name *</label>
+                            <input type="text" id="editAttendeeName" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="editAttendeeEmail">Email *</label>
+                            <input type="email" id="editAttendeeEmail" required />
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-ghost" id="cancelEditAttendee">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Speaker Modal -->
+    <div id="editSpeakerModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-form">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <h2>Edit Speaker</h2>
+                <form id="editSpeakerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editSpeakerName">Name *</label>
+                            <input type="text" id="editSpeakerName" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="editSpeakerTitle">Title *</label>
+                            <input type="text" id="editSpeakerTitle" required />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="editSpeakerBio">Bio</label>
+                            <textarea id="editSpeakerBio" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-ghost" id="cancelEditSpeaker">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Room Modal -->
+    <div id="editRoomModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-form">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <h2>Edit Room</h2>
+                <form id="editRoomForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editRoomName">Room Name *</label>
+                            <input type="text" id="editRoomName" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="editRoomColor">Color Theme *</label>
+                            <select id="editRoomColor" required>
+                                <option value="">Select Color</option>
+                                <option value="room-1">Copado Blue</option>
+                                <option value="room-2">Teal</option>
+                                <option value="room-3">Orange</option>
+                                <option value="room-4">Sky Blue</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-ghost" id="cancelEditRoom">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
                     </div>
                 </form>
             </div>
